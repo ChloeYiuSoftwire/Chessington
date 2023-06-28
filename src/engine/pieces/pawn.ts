@@ -13,7 +13,7 @@ export default class Pawn extends Piece {
     const moves = [];
     const location = board.findPiece(this);
     const targetSquare = new Square(location.row + 1 * color, location.col);
-    if (board.getPiece(targetSquare) === undefined) {
+    if (targetSquare.row >= 0 && targetSquare.row <= 7 && board.getPiece(targetSquare) === undefined) {
       moves.push(targetSquare);
     }
     if (
