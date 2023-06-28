@@ -9,15 +9,21 @@ export default class Pawn extends Piece {
   }
 
   public getAvailableMoves(board: Board) {
-    let color = this.player === Player.WHITE ? 1 : -1;
-    let moves = [];
-    let location = board.findPiece(this);
-    moves.push(new Square(location.row + 1 * color, location.col));
+    const color = this.player === Player.WHITE ? 1 : -1;
+    const moves = [];
+    const location = board.findPiece(this);
+    const targetSquare = new Square(location.row + 1 * color, location.col);
+    if (board.getPiece(targetSquare) === undefined) {
+      moves.push(targetSquare);
+    }
     if (
       (location.row === 1 && this.player === Player.WHITE) ||
       (location.row === 6 && this.player === Player.BLACK)
     ) {
-      moves.push(new Square(location.row + 2 * color, location.col));
+       const targetSquare2 = new Square(location.row + 2 * color, location.col);
+      if (board.getPiece(targetSquare2) === undefined && board.getPiece(targetSquare) === undefined) {
+          moves.push(targetSquare2);
+        }
     }
     return moves;
   }
