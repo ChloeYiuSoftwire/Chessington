@@ -2,6 +2,7 @@ import Piece from "./piece";
 import Player from "../player";
 import Board from "../board";
 import Square from "../square";
+import King from "./king";
 
 export default class Bishop extends Piece {
   public constructor(player: Player) {
@@ -9,52 +10,41 @@ export default class Bishop extends Piece {
   }
 
   public getAvailableMoves(board: Board) {
-    let location = board.findPiece(this);
-    let moves = [];
-    for (let num = 1; num < 8; num++) {
-      const targetSquare = new Square(location.row + num, location.col + num);
-      if (
-        location.row + num >= 8 ||
-        location.col + num >= 8 ||
-        board.getPiece(targetSquare) !== undefined
-      ) {
-        break;
+    const location = board.findPiece(this);
+    const moves: Square[] = [];
+    const functionInputs = [
+      [1, 1],
+      [1, -1],
+      [-1, -1],
+      [-1, 1],
+    ];
+    functionInputs.forEach((functionInput) => {
+      for (let num = 1; true; num++) {
+        const targetSquare = new Square(
+          location.row + num * functionInput[0],
+          location.col + num * functionInput[1]
+        );
+        if (
+          targetSquare.row >= 8 ||
+          targetSquare.row < 0 ||
+          targetSquare.col >= 8 ||
+          targetSquare.col < 0
+        ) {
+          break;
+        }
+        const targetPiece = board.getPiece(targetSquare);
+        if (targetPiece !== undefined) {
+          if (
+            this.player !== targetPiece.player &&
+            !(targetPiece instanceof King)
+          ) {
+            moves.push(targetSquare);
+          }
+          break;
+        }
+        moves.push(targetSquare);
       }
-      moves.push(targetSquare);
-    }
-    for (let num = 1; num < 8; num++) {
-      const targetSquare = new Square(location.row - num, location.col + num);
-      if (
-        location.row - num < 0 ||
-        location.col + num >= 8 ||
-        board.getPiece(targetSquare) !== undefined
-      ) {
-        break;
-      }
-      moves.push(targetSquare);
-    }
-    for (let num = 1; num < 8; num++) {
-      const targetSquare = new Square(location.row + num, location.col - num);
-      if (
-        location.row + num >= 8 ||
-        location.col - num < 0 ||
-        board.getPiece(targetSquare) !== undefined
-      ) {
-        break;
-      }
-      moves.push(targetSquare);
-    }
-    for (let num = 1; num < 8; num++) {
-      const targetSquare = new Square(location.row - num, location.col - num);
-      if (
-        location.row - num < 0 ||
-        location.col - num < 0 ||
-        board.getPiece(targetSquare) !== undefined
-      ) {
-        break;
-      }
-      moves.push(targetSquare);
-    }
+    });
     return moves;
   }
 }
