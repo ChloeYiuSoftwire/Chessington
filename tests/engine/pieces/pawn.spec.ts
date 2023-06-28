@@ -183,5 +183,20 @@ describe('Pawn', () => {
         const moves = pawn.getAvailableMoves(board);
 
         moves.should.not.deep.include(Square.at(4, 3));
+
     });
+
+    it('can en passant as white', () => {
+        const pawn = new Pawn(Player.BLACK);
+        const oppositionPawn = new Pawn(Player.WHITE);
+        board.setPiece(Square.at(6, 4), pawn);
+        board.setPiece(Square.at(4, 5), oppositionPawn);
+        board.movePiece(Square.at(6, 4),Square.at(4, 4))
+
+        const moves = pawn.getAvailableMoves(board);
+
+        moves.should.deep.include.members([Square.at(5, 4)]);
+    });
+
+
 });

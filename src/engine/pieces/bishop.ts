@@ -19,10 +19,10 @@ export default class Bishop extends Piece {
       [-1, 1],
     ];
     functionInputs.forEach((functionInput) => {
-      for (let num = 1; true; num++) {
+      for (let multiplier = 1; true; multiplier++) {
         const targetSquare = new Square(
-          location.row + num * functionInput[0],
-          location.col + num * functionInput[1]
+          location.row + multiplier * functionInput[0],
+          location.col + multiplier * functionInput[1]
         );
         if (
           targetSquare.row >= 8 ||
