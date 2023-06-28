@@ -184,4 +184,28 @@ describe('Pawn', () => {
 
         moves.should.not.deep.include(Square.at(4, 3));
     });
+
+    it('can en passant as white', () => {
+        const blackPawn = new Pawn(Player.BLACK);
+        const whitePawn = new Pawn(Player.WHITE);
+        board.setPiece(Square.at(6, 4), blackPawn);
+        board.setPiece(Square.at(4, 5), whitePawn);
+        board.movePiece(Square.at(6, 4),Square.at(4, 4))
+
+        const moves = whitePawn.getAvailableMoves(board);
+
+        moves.should.deep.include.members([Square.at(5, 4)]);
+    });
+
+    it('can en passant as black', () => {
+        const blackPawn = new Pawn(Player.BLACK);
+        const whitePawn = new Pawn(Player.WHITE);
+        board.setPiece(Square.at(3, 5), blackPawn);
+        board.setPiece(Square.at(1, 4), whitePawn);
+        board.movePiece(Square.at(1, 4),Square.at(3, 4))
+
+        const moves = whitePawn.getAvailableMoves(board);
+
+        moves.should.deep.include.members([Square.at(2, 4)]);
+    });
 });
