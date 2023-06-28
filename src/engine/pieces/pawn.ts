@@ -14,44 +14,51 @@ export default class Pawn extends Piece {
     const moves = [];
     const location = board.findPiece(this);
     const targetSquare = new Square(location.row + 1 * color, location.col);
-    if (targetSquare.row >= 0 && targetSquare.row <= 7 && board.getPiece(targetSquare) === undefined) {
+    if (
+      targetSquare.row >= 0 &&
+      targetSquare.row <= 7 &&
+      board.getPiece(targetSquare) === undefined
+    ) {
       moves.push(targetSquare);
     }
     if (
       (location.row === 1 && this.player === Player.WHITE) ||
       (location.row === 6 && this.player === Player.BLACK)
     ) {
-       const targetSquare2 = new Square(location.row + 2 * color, location.col);
-      if (board.getPiece(targetSquare2) === undefined && board.getPiece(targetSquare) === undefined) {
-          moves.push(targetSquare2);
-        }
+      const targetSquare2 = new Square(location.row + 2 * color, location.col);
+      if (
+        board.getPiece(targetSquare2) === undefined &&
+        board.getPiece(targetSquare) === undefined
+      ) {
+        moves.push(targetSquare2);
+      }
     }
     let movements = [
-        [1,1],
-        [1,-1]
-      ];
-      movements.forEach((movement) => {
-        const targetSquare = new Square(
-          location.row + movement[0]*color,
-          location.col + movement[1]
-        );
-        if (
-          targetSquare.row >= 0 &&
-          targetSquare.row <= 7 &&
-          targetSquare.col >= 0 &&
-          targetSquare.col <= 7
-        ) {
-          const targetPiece = board.getPiece(targetSquare);
-          if (targetPiece !== undefined) {
-            if (
-              this.player !== targetPiece.player &&
-              !(targetPiece instanceof King)
-            ) {
-              moves.push(targetSquare);
-            }
-          } 
+      [1, 1],
+      [1, -1],
+    ];
+    movements.forEach((movement) => {
+      const targetSquare = new Square(
+        location.row + movement[0] * color,
+        location.col + movement[1]
+      );
+      if (
+        targetSquare.row >= 0 &&
+        targetSquare.row <= 7 &&
+        targetSquare.col >= 0 &&
+        targetSquare.col <= 7
+      ) {
+        const targetPiece = board.getPiece(targetSquare);
+        if (targetPiece !== undefined) {
+          if (
+            this.player !== targetPiece.player &&
+            !(targetPiece instanceof King)
+          ) {
+            moves.push(targetSquare);
+          }
         }
-      });
+      }
+    });
     return moves;
   }
 }
