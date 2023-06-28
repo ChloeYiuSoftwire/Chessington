@@ -22,15 +22,27 @@ export default class King extends Piece {
       [0, -1],
     ];
     movements.forEach((movement) => {
+      const targetSquare = new Square(
+        location.row + movement[0],
+        location.col + movement[1]
+      );
       if (
-        location.row + movement[0] >= 0 &&
-        location.row + movement[0] <= 7 &&
-        location.col + movement[1] >= 0 &&
-        location.col + movement[1] <= 7
+        targetSquare.row >= 0 &&
+        targetSquare.row <= 7 &&
+        targetSquare.col >= 0 &&
+        targetSquare.col <= 7
       ) {
-        moves.push(
-          new Square(location.row + movement[0], location.col + movement[1])
-        );
+        const targetPiece = board.getPiece(targetSquare);
+        if (targetPiece !== undefined) {
+          if (
+            this.player !== targetPiece.player &&
+            !(targetPiece instanceof King)
+          ) {
+            moves.push(targetSquare);
+          }
+        } else {
+          moves.push(targetSquare);
+        }
       }
     });
     return moves;
