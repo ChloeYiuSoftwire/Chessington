@@ -2,6 +2,7 @@ import Piece from "./piece";
 import Player from "../player";
 import Board from "../board";
 import Square from "../square";
+import King from "./king";
 
 export default class Rook extends Piece {
   public constructor(player: Player) {
@@ -13,28 +14,60 @@ export default class Rook extends Piece {
     let moves: Square[] = [];
 
     for (let col = location.col - 1; col >= 0; col--) {
-      if (board.getPiece(new Square(location.row, col)) !== undefined) {
+      const targetSquare = new Square(location.row, col);
+      const targetPiece = board.getPiece(targetSquare);
+      if (targetPiece !== undefined) {
+        if (
+          this.player !== targetPiece.player &&
+          !(targetPiece instanceof King)
+        ) {
+          moves.push(targetSquare);
+        }
         break;
       }
-      moves.push(new Square(location.row, col));
+      moves.push(targetSquare);
     }
     for (let col = location.col + 1; col <= 7; col++) {
-      if (board.getPiece(new Square(location.row, col)) !== undefined) {
+      const targetSquare = new Square(location.row, col);
+      const targetPiece = board.getPiece(targetSquare);
+      if (targetPiece !== undefined) {
+        if (
+          this.player !== targetPiece.player &&
+          !(targetPiece instanceof King)
+        ) {
+          moves.push(targetSquare);
+        }
         break;
       }
-      moves.push(new Square(location.row, col));
+      moves.push(targetSquare);
     }
     for (let row = location.row - 1; row >= 0; row--) {
-      if (board.getPiece(new Square(row, location.col)) !== undefined) {
+      const targetSquare = new Square(row, location.col);
+      const targetPiece = board.getPiece(targetSquare);
+      if (targetPiece !== undefined) {
+        if (
+          this.player !== targetPiece.player &&
+          !(targetPiece instanceof King)
+        ) {
+          moves.push(targetSquare);
+        }
         break;
       }
-      moves.push(new Square(row, location.col));
+      moves.push(targetSquare);
     }
     for (let row = location.row + 1; row <= 7; row++) {
-      if (board.getPiece(new Square(row, location.col)) !== undefined) {
+      const targetSquare = new Square(row, location.col);
+      const targetPiece = board.getPiece(targetSquare);
+      if (targetPiece !== undefined) {
+        if (
+          this.player !== targetPiece.player &&
+          !(targetPiece instanceof King)
+        ) {
+          moves.push(targetSquare);
+        }
         break;
       }
-      moves.push(new Square(row, location.col));
+      moves.push(targetSquare);
     }
 
     return moves;
