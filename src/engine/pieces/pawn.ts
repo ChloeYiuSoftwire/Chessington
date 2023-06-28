@@ -10,7 +10,6 @@ export default class Pawn extends Piece {
 
   public getAvailableMoves(board: Board) {
     let color = this.player === Player.WHITE ? 1 : -1;
-
     let moves = [];
     let location = board.findPiece(this);
     moves.push(new Square(location.row + 1 * color, location.col));
