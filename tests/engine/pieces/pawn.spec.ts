@@ -208,4 +208,64 @@ describe('Pawn', () => {
 
         moves.should.deep.include.members([Square.at(2, 4)]);
     });
+
+    it('white should not en passant after extra moves', () => {
+        const blackPawn = new Pawn(Player.BLACK);
+        const whitePawn = new Pawn(Player.WHITE);
+        const blackKing = new King(Player.BLACK);
+        const whiteKing = new King(Player.WHITE);
+        board.setPiece(Square.at(6, 4), blackPawn);
+        board.setPiece(Square.at(4, 5), whitePawn);
+        board.setPiece(Square.at(0, 0), blackKing);
+        board.setPiece(Square.at(0, 7), whiteKing);
+        board.movePiece(Square.at(6, 4),Square.at(4, 4));
+        board.movePiece(Square.at(0, 7),Square.at(0, 6));
+        board.movePiece(Square.at(0, 0),Square.at(0, 1));
+
+        const moves = whitePawn.getAvailableMoves(board);
+
+        moves.should.not.deep.include.members([Square.at(5, 4)]);
+    });
+
+    it('black should not en passant after extra moves', () => {
+        const blackPawn = new Pawn(Player.BLACK);
+        const whitePawn = new Pawn(Player.WHITE);
+        const blackKing = new King(Player.BLACK);
+        const whiteKing = new King(Player.WHITE);
+        board.setPiece(Square.at(3, 5), blackPawn);
+        board.setPiece(Square.at(1, 4), whitePawn);
+        board.setPiece(Square.at(0, 0), blackKing);
+        board.setPiece(Square.at(0, 7), whiteKing);
+        board.movePiece(Square.at(1, 4),Square.at(3, 4));
+        board.movePiece(Square.at(0, 7),Square.at(0, 6));
+        board.movePiece(Square.at(0, 0),Square.at(0, 1));
+
+        const moves = whitePawn.getAvailableMoves(board);
+
+        moves.should.not.deep.include.members([Square.at(2, 4)]);
+    });
+
+    it('en passant and pawn gets removed as white', () => {
+        const blackPawn = new Pawn(Player.BLACK);
+        const whitePawn = new Pawn(Player.WHITE);
+        board.setPiece(Square.at(6, 4), blackPawn);
+        board.setPiece(Square.at(4, 5), whitePawn);
+        board.movePiece(Square.at(6, 4),Square.at(4, 4));
+        board.movePiece(Square.at(4, 5),Square.at(5, 4));
+
+        // Assert
+        expect(board.getPiece(Square.at(4, 4))).should.equal(undefined);
+    });
+
+    it('en passant and pawn gets removed as black', () => {
+        const blackPawn = new Pawn(Player.BLACK);
+        const whitePawn = new Pawn(Player.WHITE);
+        board.setPiece(Square.at(3, 5), blackPawn);
+        board.setPiece(Square.at(1, 4), whitePawn);
+        board.movePiece(Square.at(1, 4),Square.at(3, 4));
+        board.movePiece(Square.at(3, 5),Square.at(2, 4));
+
+        // Assert
+        expect(board.getPiece(Square.at(3, 4))).should.equal(undefined);
+    });
 });
