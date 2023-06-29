@@ -88,4 +88,6 @@ describe('Bishop', () => {
 
         moves.should.not.deep.include(Square.at(6, 6));
     });
+
+    
 });

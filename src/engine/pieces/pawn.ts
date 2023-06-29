@@ -19,7 +19,9 @@ export default class Pawn extends Piece {
       targetSquare.row <= 7 &&
       board.getPiece(targetSquare) === undefined
     ) {
-      moves.push(targetSquare);
+      if (board.checkMove(location, targetSquare)) {
+        moves.push(targetSquare);
+      }
     }
     if (
       (location.row === 1 && this.player === Player.WHITE) ||
@@ -30,7 +32,9 @@ export default class Pawn extends Piece {
         board.getPiece(targetSquare2) === undefined &&
         board.getPiece(targetSquare) === undefined
       ) {
-        moves.push(targetSquare2);
+        if (board.checkMove(location, targetSquare)) {
+          moves.push(targetSquare);
+        }
       }
     }
     let movements = [
@@ -54,16 +58,21 @@ export default class Pawn extends Piece {
             this.player !== targetPiece.player &&
             !(targetPiece instanceof King)
           ) {
-            moves.push(targetSquare);
+            if (board.checkMove(location, targetSquare)) {
+              moves.push(targetSquare);
+            }
           }
         } else if (
           board.enPassant !== undefined &&
           board.enPassant.equals(new Square(location.row, targetSquare.col))
         ) {
-          moves.push(targetSquare);
+          if (board.checkMove(location, targetSquare)) {
+            moves.push(targetSquare);
+          }
         }
       }
     });
+    console.log(board);
     return moves;
   }
 }

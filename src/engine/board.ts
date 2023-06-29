@@ -3,6 +3,11 @@ import GameSettings from "./gameSettings";
 import Square from "./square";
 import Piece from "./pieces/piece";
 import Pawn from "./pieces/pawn";
+import Rook from "./pieces/rook";
+import Queen from "./pieces/queen";
+import Bishop from "./pieces/bishop";
+import Knight from "./pieces/knight";
+import King from "./pieces/king";
 
 export default class Board {
   public currentPlayer: Player;
@@ -60,6 +65,179 @@ export default class Board {
     }
   }
 
+  public checkMove(fromSquare: Square, toSquare: Square) {
+    const currentPlayer = this.currentPlayer;
+    //const board2 = JSON.parse(JSON.stringify(this.board)) as Board; //DOUBLE CHECK THIS!
+
+    board2.movePiece(fromSquare, toSquare);
+    // finding right color king square
+    let kingSquare = undefined;
+    for (let r = 0; r <= 7; r++) {
+      for (let c = 0; c <= 7; c++) {
+        const currentPiece = board2.getPiece(new Square(r, c));
+        if (
+          currentPiece instanceof King &&
+          currentPiece.player === currentPlayer
+        ) {
+          kingSquare = new Square(r, c);
+        }
+      }
+    }
+    //checking whether king attacked + return true if avaliable move
+    return !(
+      kingSquare !== undefined &&
+      board2.isAttacked(kingSquare, this.currentPlayer)
+    );
+  }
+
+  public isAttacked(targetSquare: Square, attacker: Player) {
+    return (
+      this.checkRanksAndFiles(targetSquare, attacker) ||
+      this.checkDiagonals(targetSquare, attacker) ||
+      this.checkKnights(targetSquare, attacker) ||
+      this.checkPawns(targetSquare, attacker)
+    );
+  }
+
+  public checkRanksAndFiles(startSquare: Square, attacker: Player) {
+    let functionReturn = false;
+    const functionInputs = [
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+    ];
+    functionInputs.forEach((functionInput) => {
+      for (let multiplier = 1; true; multiplier++) {
+        let targetSquare = new Square(
+          startSquare.row + multiplier * functionInput[0],
+          startSquare.col + multiplier * functionInput[1]
+        );
+        if (
+          targetSquare.row >= 8 ||
+          targetSquare.row < 0 ||
+          targetSquare.col >= 8 ||
+          targetSquare.col < 0
+        ) {
+          break;
+        }
+        const targetPiece = this.getPiece(targetSquare);
+        if (targetPiece !== undefined) {
+          if (
+            targetPiece.player === attacker &&
+            (targetPiece instanceof Rook || targetPiece instanceof Queen)
+          ) {
+            functionReturn = true;
+            break;
+          } else {
+            break;
+          }
+        }
+      }
+    });
+    return functionReturn;
+  }
+
+  public checkDiagonals(startSquare: Square, attacker: Player) {
+    let functionReturn = false;
+    const functionInputs = [
+      [1, 1],
+      [-1, 1],
+      [1, -1],
+      [-1, -1],
+    ];
+    functionInputs.forEach((functionInput) => {
+      for (let multiplier = 1; true; multiplier++) {
+        const targetSquare = new Square(
+          startSquare.row + multiplier * functionInput[0],
+          startSquare.col + multiplier * functionInput[1]
+        );
+        if (
+          targetSquare.row >= 8 ||
+          targetSquare.row < 0 ||
+          targetSquare.col >= 8 ||
+          targetSquare.col < 0
+        ) {
+          break;
+        }
+        const targetPiece = this.getPiece(targetSquare);
+        if (targetPiece !== undefined) {
+          if (
+            targetPiece.player === attacker &&
+            (targetPiece instanceof Bishop || targetPiece instanceof Queen)
+          ) {
+            functionReturn = true;
+            break;
+          } else {
+            break;
+          }
+        }
+      }
+    });
+    return functionReturn;
+  }
+
+  public checkKnights(startSquare: Square, attacker: Player) {
+    let functionReturn = false;
+    const functionInputs = [
+      [2, 1],
+      [1, 2],
+      [-1, 2],
+      [-2, 1],
+      [2, -1],
+      [1, -2],
+      [-1, -2],
+      [-2, -1],
+    ];
+    functionInputs.forEach((functionInput) => {
+      const targetSquare = new Square(
+        startSquare.row + functionInput[0],
+        startSquare.col + functionInput[1]
+      );
+      if (
+        targetSquare.row >= 0 &&
+        targetSquare.row <= 7 &&
+        targetSquare.col >= 0 &&
+        targetSquare.col <= 7
+      ) {
+        const targetPiece = this.getPiece(targetSquare);
+        if (targetPiece !== undefined) {
+          if (targetPiece.player === attacker && targetPiece instanceof Knight)
+            functionReturn = true;
+        }
+      }
+    });
+    return functionReturn;
+  }
+
+  public checkPawns(startSquare: Square, attacker: Player) {
+    let functionReturn = false;
+    const color = attacker === Player.WHITE ? -1 : 1;
+    const functionInputs = [
+      [color, 1],
+      [color, -1],
+    ];
+    functionInputs.forEach((functionInput) => {
+      const targetSquare = new Square(
+        startSquare.row + functionInput[0],
+        startSquare.col + functionInput[1]
+      );
+      if (
+        targetSquare.row >= 0 &&
+        targetSquare.row <= 7 &&
+        targetSquare.col >= 0 &&
+        targetSquare.col <= 7
+      ) {
+        const targetPiece = this.getPiece(targetSquare);
+        if (targetPiece !== undefined) {
+          if (targetPiece.player === attacker && targetPiece instanceof Pawn)
+            functionReturn = true;
+        }
+      }
+    });
+    return functionReturn;
+  }
+
   private createBoard() {
     const board = new Array(GameSettings.BOARD_SIZE);
     for (let i = 0; i < board.length; i++) {
@@ -67,4 +245,16 @@ export default class Board {
     }
     return board;
   }
+
+  public copyBoard(board: Board) {
+    let board2 = this.createBoard()
+    for (let r = 0; r <= 7; r++) {
+      for (let c = 0; c <= 7; c++) {
+       const currentPiece = board.getPiece(new Square(r,c))
+       board2.setPiece()
+      }
+    }
+  }
 }
+
+

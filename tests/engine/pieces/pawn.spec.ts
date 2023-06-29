@@ -275,4 +275,19 @@ describe('Pawn', () => {
         // Assert
         (board.getPiece(Square.at(3, 4)) === undefined).should.equal(true);
     });
+
+    it('pawn can\'t move if illegal move', () => {
+        const whiteKing = new King(Player.WHITE);
+        const whitePawn = new Pawn(Player.WHITE);
+        const blackQueen = new Pawn(Player.BLACK);
+        board.setPiece(Square.at(0, 4), whiteKing);
+        board.setPiece(Square.at(1, 5), whitePawn);
+        board.setPiece(Square.at(3, 7), blackQueen);
+
+        board.currentPlayer = Player.WHITE;
+
+        const moves = whitePawn.getAvailableMoves(board);
+
+        moves.should.not.deep.include(Square.at(3, 5));
+    });
 });
