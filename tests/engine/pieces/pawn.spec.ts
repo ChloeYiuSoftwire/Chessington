@@ -191,6 +191,7 @@ describe('Pawn', () => {
         const whitePawn = new Pawn(Player.WHITE);
         board.setPiece(Square.at(6, 4), blackPawn);
         board.setPiece(Square.at(4, 5), whitePawn);
+        board.currentPlayer = Player.BLACK;
         board.movePiece(Square.at(6, 4),Square.at(4, 4))
 
         const moves = whitePawn.getAvailableMoves(board);
@@ -203,9 +204,10 @@ describe('Pawn', () => {
         const whitePawn = new Pawn(Player.WHITE);
         board.setPiece(Square.at(3, 5), blackPawn);
         board.setPiece(Square.at(1, 4), whitePawn);
+        board.currentPlayer = Player.WHITE;
         board.movePiece(Square.at(1, 4),Square.at(3, 4))
 
-        const moves = whitePawn.getAvailableMoves(board);
+        const moves = blackPawn.getAvailableMoves(board);
 
         moves.should.deep.include.members([Square.at(2, 4)]);
     });
@@ -219,6 +221,7 @@ describe('Pawn', () => {
         board.setPiece(Square.at(4, 5), whitePawn);
         board.setPiece(Square.at(0, 0), blackKing);
         board.setPiece(Square.at(0, 7), whiteKing);
+        board.currentPlayer = Player.BLACK;
         board.movePiece(Square.at(6, 4),Square.at(4, 4));
         board.movePiece(Square.at(0, 7),Square.at(0, 6));
         board.movePiece(Square.at(0, 0),Square.at(0, 1));
@@ -237,11 +240,12 @@ describe('Pawn', () => {
         board.setPiece(Square.at(1, 4), whitePawn);
         board.setPiece(Square.at(0, 0), blackKing);
         board.setPiece(Square.at(0, 7), whiteKing);
+        board.currentPlayer = Player.WHITE;
         board.movePiece(Square.at(1, 4),Square.at(3, 4));
         board.movePiece(Square.at(0, 7),Square.at(0, 6));
         board.movePiece(Square.at(0, 0),Square.at(0, 1));
 
-        const moves = whitePawn.getAvailableMoves(board);
+        const moves = blackPawn.getAvailableMoves(board);
 
         moves.should.not.deep.include.members([Square.at(2, 4)]);
     });
@@ -251,11 +255,12 @@ describe('Pawn', () => {
         const whitePawn = new Pawn(Player.WHITE);
         board.setPiece(Square.at(6, 4), blackPawn);
         board.setPiece(Square.at(4, 5), whitePawn);
+        board.currentPlayer = Player.BLACK;
         board.movePiece(Square.at(6, 4),Square.at(4, 4));
         board.movePiece(Square.at(4, 5),Square.at(5, 4));
 
         // Assert
-        expect(board.getPiece(Square.at(4, 4))).should.equal(undefined);
+        (board.getPiece(Square.at(4, 4)) === undefined).should.equal(true);
     });
 
     it('en passant and pawn gets removed as black', () => {
@@ -263,10 +268,11 @@ describe('Pawn', () => {
         const whitePawn = new Pawn(Player.WHITE);
         board.setPiece(Square.at(3, 5), blackPawn);
         board.setPiece(Square.at(1, 4), whitePawn);
+        board.currentPlayer = Player.WHITE;
         board.movePiece(Square.at(1, 4),Square.at(3, 4));
         board.movePiece(Square.at(3, 5),Square.at(2, 4));
 
         // Assert
-        expect(board.getPiece(Square.at(3, 4))).should.equal(undefined);
+        (board.getPiece(Square.at(3, 4)) === undefined).should.equal(true);
     });
 });

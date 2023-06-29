@@ -41,9 +41,12 @@ export default class Board {
       this.setPiece(fromSquare, undefined);
       this.currentPlayer =
         this.currentPlayer === Player.WHITE ? Player.BLACK : Player.WHITE;
-        // check if the move is an enPassant attack
-      if (this.enPassant === new Square(fromSquare.row, toSquare.col)) {
-        // write code
+      // check if the move is an enPassant attack
+      if (
+        this.enPassant !== undefined &&
+        this.enPassant.equals(new Square(fromSquare.row, toSquare.col))
+      ) {
+        this.setPiece(this.enPassant, undefined);
       }
       // check if the move can make the next step being an enPassant
       if (

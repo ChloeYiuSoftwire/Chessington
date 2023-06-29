@@ -56,11 +56,13 @@ export default class Pawn extends Piece {
           ) {
             moves.push(targetSquare);
           }
-        } else if (board.enPassant === new Square(location.row, targetSquare.col)) {
-            moves.push(targetSquare)
-            
+        } else if (
+          board.enPassant !== undefined &&
+          board.enPassant.equals(new Square(location.row, targetSquare.col))
+        ) {
+          moves.push(targetSquare);
         }
-      } 
+      }
     });
     return moves;
   }
