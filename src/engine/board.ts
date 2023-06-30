@@ -80,7 +80,8 @@ export default class Board {
       this.checkRanksAndFiles(targetSquare, attacker) ||
       this.checkDiagonals(targetSquare, attacker) ||
       this.checkKnights(targetSquare, attacker) ||
-      this.checkPawns(targetSquare, attacker)
+      this.checkPawns(targetSquare, attacker) ||
+      this.checkKing(targetSquare, attacker)
     );
   }
 
@@ -188,6 +189,39 @@ export default class Board {
         const targetPiece = this.getPiece(targetSquare);
         if (targetPiece !== undefined) {
           if (targetPiece.player === attacker && targetPiece instanceof Knight)
+            functionReturn = true;
+        }
+      }
+    });
+    return functionReturn;
+  }
+
+  public checkKing(startSquare: Square, attacker: Player) {
+    let functionReturn = false;
+    const functionInputs = [
+      [0, 1],
+      [0, -1],
+      [1, 0],
+      [1, 1],
+      [1, -1],
+      [-1, 1],
+      [-1, 0],
+      [-1, -1],
+    ];
+    functionInputs.forEach((functionInput) => {
+      const targetSquare = new Square(
+        startSquare.row + functionInput[0],
+        startSquare.col + functionInput[1]
+      );
+      if (
+        targetSquare.row >= 0 &&
+        targetSquare.row <= 7 &&
+        targetSquare.col >= 0 &&
+        targetSquare.col <= 7
+      ) {
+        const targetPiece = this.getPiece(targetSquare);
+        if (targetPiece !== undefined) {
+          if (targetPiece.player === attacker && targetPiece instanceof King)
             functionReturn = true;
         }
       }

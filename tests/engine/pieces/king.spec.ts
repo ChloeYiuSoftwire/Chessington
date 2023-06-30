@@ -88,6 +88,15 @@ describe('King', () => {
         board.isAttacked(Square.at(4, 4), Player.BLACK).should.equal(true);
     });
 
+    it('king can check king', () => {
+        const whiteKing = new King(Player.WHITE);
+        const blackKing = new King(Player.BLACK);
+        board.setPiece(Square.at(4, 4), whiteKing);
+        board.setPiece(Square.at(3, 4), blackKing);
+
+        board.isAttacked(Square.at(4, 4), Player.BLACK).should.equal(true);
+    });
+
     it('queen can check king on file', () => {
         const whiteKing = new King(Player.WHITE);
         const blackQueen = new Queen(Player.BLACK);
