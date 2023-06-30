@@ -45,29 +45,30 @@ export default class Board {
     throw new Error("The supplied piece is not on the board");
   }
 
-  /*
+
   public changePromotion() {
     const input = document.querySelector("input");
     if (input !== null) {
-      input.addEventListener("keydown", logKey: );
-      function logKey(key: string) {
-        if (key = 'Q') {
+      input.addEventListener("keydown", (event) => {
+        ;
+        if (event.key === 'q' || event.key === 'Q') {
           this.piecepromote = 'Q'
         }
-        if (key = 'Q') {
-          console.log('Q')
+        if (event.key === 'b' || event.key === 'B') {
+          this.piecepromote = 'B'
         }
-        if (key = 'Q') {
-          console.log('Q')
+        if (event.key === 'n' || event.key === 'N') {
+          this.piecepromote = 'N'
         }
-        if (key = 'Q') {
-          console.log('Q')
+        if (event.key === 'r' || event.key === 'R') {
+          this.piecepromote = 'R'
         }
-      }
+      })
+
     }
   }
 
-*/
+
 
 
 
@@ -81,8 +82,6 @@ export default class Board {
       this.setPiece(fromSquare, undefined);
       //check for promotion
       if (movingPiece instanceof Pawn && toSquare.row === 7) {
-        console.log('we have accessed white promotion if statement')
-        console.log(`piece promote = ${this.piecepromote}`)
         if (this.piecepromote === 'Q') {
           this.setPiece(toSquare, new Queen(Player.WHITE))
         } else if (this.piecepromote === 'R') {
@@ -94,8 +93,6 @@ export default class Board {
         }
       }
       else if (movingPiece instanceof Pawn && toSquare.row === 0) {
-        console.log('we have accessed black promotion if statement')
-        console.log(`piece promote = ${this.piecepromote}`)
         if (this.piecepromote === 'Q') {
           this.setPiece(toSquare, new Queen(Player.BLACK))
         } else if (this.piecepromote === 'R') {
