@@ -39,10 +39,10 @@ export default class Knight extends Piece {
             this.player !== targetPiece.player &&
             !(targetPiece instanceof King)
           ) {
-            moves.push(targetSquare);
+            this.pushOnlyLegalMoves(moves, location, targetSquare, board);
           }
         } else {
-          moves.push(targetSquare);
+          this.pushOnlyLegalMoves(moves, location, targetSquare, board);
         }
       }
     });

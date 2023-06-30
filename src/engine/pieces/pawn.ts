@@ -11,7 +11,7 @@ export default class Pawn extends Piece {
 
   public getAvailableMoves(board: Board) {
     const color = this.player === Player.WHITE ? 1 : -1;
-    const moves = [];
+    const moves: Square[] = [];
     const location = board.findPiece(this);
     const targetSquare = new Square(location.row + 1 * color, location.col);
     if (
@@ -19,9 +19,7 @@ export default class Pawn extends Piece {
       targetSquare.row <= 7 &&
       board.getPiece(targetSquare) === undefined
     ) {
-      if (board.checkMove(location, targetSquare)) {
-        moves.push(targetSquare);
-      }
+      this.pushOnlyLegalMoves(moves, location, targetSquare, board);
     }
     if (
       (location.row === 1 && this.player === Player.WHITE) ||
@@ -32,9 +30,7 @@ export default class Pawn extends Piece {
         board.getPiece(targetSquare2) === undefined &&
         board.getPiece(targetSquare) === undefined
       ) {
-        if (board.checkMove(location, targetSquare)) {
-          moves.push(targetSquare);
-        }
+        this.pushOnlyLegalMoves(moves, location, targetSquare2, board);
       }
     }
     let movements = [
@@ -58,21 +54,16 @@ export default class Pawn extends Piece {
             this.player !== targetPiece.player &&
             !(targetPiece instanceof King)
           ) {
-            if (board.checkMove(location, targetSquare)) {
-              moves.push(targetSquare);
-            }
+            this.pushOnlyLegalMoves(moves, location, targetSquare, board);
           }
         } else if (
           board.enPassant !== undefined &&
           board.enPassant.equals(new Square(location.row, targetSquare.col))
         ) {
-          if (board.checkMove(location, targetSquare)) {
-            moves.push(targetSquare);
-          }
+          this.pushOnlyLegalMoves(moves, location, targetSquare, board);
         }
       }
     });
-    console.log(board);
     return moves;
   }
 }

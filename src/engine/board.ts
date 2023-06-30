@@ -13,11 +13,15 @@ export default class Board {
   public currentPlayer: Player;
   private readonly board: (Piece | undefined)[][];
   public enPassant: Square | undefined;
+  public whiteKingSquare: Square;
+  public blackKingSquare: Square;
 
   public constructor(currentPlayer?: Player) {
     this.currentPlayer = currentPlayer ? currentPlayer : Player.WHITE;
     this.board = this.createBoard();
     this.enPassant = undefined;
+    this.whiteKingSquare = new Square(0, 4);
+    this.blackKingSquare = new Square(7, 4);
   }
 
   public setPiece(square: Square, piece: Piece | undefined) {
@@ -62,32 +66,13 @@ export default class Board {
       } else {
         this.enPassant = undefined;
       }
-    }
-  }
-
-  public checkMove(fromSquare: Square, toSquare: Square) {
-    const currentPlayer = this.currentPlayer;
-    //const board2 = JSON.parse(JSON.stringify(this.board)) as Board; //DOUBLE CHECK THIS!
-
-    board2.movePiece(fromSquare, toSquare);
-    // finding right color king square
-    let kingSquare = undefined;
-    for (let r = 0; r <= 7; r++) {
-      for (let c = 0; c <= 7; c++) {
-        const currentPiece = board2.getPiece(new Square(r, c));
-        if (
-          currentPiece instanceof King &&
-          currentPiece.player === currentPlayer
-        ) {
-          kingSquare = new Square(r, c);
-        }
+      //check if king is moving
+      if (movingPiece instanceof King) {
+        this.currentPlayer === Player.WHITE
+          ? (this.blackKingSquare = toSquare)
+          : (this.whiteKingSquare = toSquare);
       }
     }
-    //checking whether king attacked + return true if avaliable move
-    return !(
-      kingSquare !== undefined &&
-      board2.isAttacked(kingSquare, this.currentPlayer)
-    );
   }
 
   public isAttacked(targetSquare: Square, attacker: Player) {
@@ -245,16 +230,4 @@ export default class Board {
     }
     return board;
   }
-
-  public copyBoard(board: Board) {
-    let board2 = this.createBoard()
-    for (let r = 0; r <= 7; r++) {
-      for (let c = 0; c <= 7; c++) {
-       const currentPiece = board.getPiece(new Square(r,c))
-       board2.setPiece()
-      }
-    }
-  }
 }
-
-

@@ -20,7 +20,7 @@ export default class Queen extends Piece {
       [1, 0],
       [-1, 0],
       [0, 1],
-      [0, -1]
+      [0, -1],
     ];
     functionInputs.forEach((functionInput) => {
       for (let multiplier = 1; true; multiplier++) {
@@ -42,11 +42,11 @@ export default class Queen extends Piece {
             this.player !== targetPiece.player &&
             !(targetPiece instanceof King)
           ) {
-            moves.push(targetSquare);
+            this.pushOnlyLegalMoves(moves, location, targetSquare, board);
           }
           break;
         }
-        moves.push(targetSquare);
+        this.pushOnlyLegalMoves(moves, location, targetSquare, board);
       }
     });
     return moves;
