@@ -2,6 +2,7 @@ import Player from "../player";
 import Board from "../board";
 import Square from "../square";
 
+
 export default class Piece {
   public player: Player;
 

@@ -240,6 +240,25 @@ describe('King', () => {
         board.isAttacked(Square.at(3, 3), Player.WHITE).should.equal(true);
     });
 
-    
+    it('checkmate', () => {
+        const blackKing = new King(Player.BLACK);
+        const whiteQueen = new Queen(Player.WHITE);
+        const whiteKing = new King(Player.WHITE);
+        board.setPiece(Square.at(0, 0), blackKing);
+        board.setPiece(Square.at(1, 1), whiteQueen);
+        board.setPiece(Square.at(2, 2), whiteKing);
+
+        board.checkmate.should.equal(true)
+    });
+
+    it('stalemate', () => {
+        const blackKing = new King(Player.BLACK);
+        const whitePawn = new Pawn(Player.WHITE);
+        board.setPiece(Square.at(3, 3), blackKing);
+        board.setPiece(Square.at(2, 2), whitePawn);
+
+        board.isAttacked(Square.at(3, 3), Player.WHITE).should.equal(true);
+    });
+
 
 });

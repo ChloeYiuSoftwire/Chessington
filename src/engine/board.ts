@@ -9,6 +9,13 @@ import Bishop from "./pieces/bishop";
 import Knight from "./pieces/knight";
 import King from "./pieces/king";
 
+let keyPressed = new Map();
+window.onkeydown = function (e) {
+  keyPressed.set(e.key, true);
+  console.log(`${e.key} pressed`);
+  if (e.key === 'q') {
+    console.log(' qkey pressed')
+  }
 export default class Board {
   public currentPlayer: Player;
   private readonly board: (Piece | undefined)[][];
@@ -34,6 +41,12 @@ export default class Board {
     return this.board[square.row][square.col];
   }
 
+  public changepiece() {
+
+}
+  
+
+  
   public findPiece(pieceToFind: Piece) {
     for (let row = 0; row < this.board.length; row++) {
       for (let col = 0; col < this.board[row].length; col++) {
@@ -44,31 +57,6 @@ export default class Board {
     }
     throw new Error("The supplied piece is not on the board");
   }
-
-
-  public changePromotion() {
-    const input = document.querySelector("input");
-    if (input !== null) {
-      input.addEventListener("keydown", (event) => {
-        ;
-        if (event.key === 'q' || event.key === 'Q') {
-          this.piecepromote = 'Q'
-        }
-        if (event.key === 'b' || event.key === 'B') {
-          this.piecepromote = 'B'
-        }
-        if (event.key === 'n' || event.key === 'N') {
-          this.piecepromote = 'N'
-        }
-        if (event.key === 'r' || event.key === 'R') {
-          this.piecepromote = 'R'
-        }
-      })
-
-    }
-  }
-
-
 
 
 
