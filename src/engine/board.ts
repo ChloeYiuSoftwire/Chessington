@@ -15,6 +15,7 @@ export default class Board {
   public enPassant: Square | undefined;
   public whiteKingSquare: Square;
   public blackKingSquare: Square;
+  public piecepromote: String;
 
   public constructor(currentPlayer?: Player) {
     this.currentPlayer = currentPlayer ? currentPlayer : Player.WHITE;
@@ -22,6 +23,7 @@ export default class Board {
     this.enPassant = undefined;
     this.whiteKingSquare = new Square(0, 4);
     this.blackKingSquare = new Square(7, 4);
+    this.piecepromote = 'Q'
   }
 
   public setPiece(square: Square, piece: Piece | undefined) {
@@ -43,36 +45,96 @@ export default class Board {
     throw new Error("The supplied piece is not on the board");
   }
 
+  /*
+  public changePromotion() {
+    const input = document.querySelector("input");
+    if (input !== null) {
+      input.addEventListener("keydown", logKey: );
+      function logKey(key: string) {
+        if (key = 'Q') {
+          this.piecepromote = 'Q'
+        }
+        if (key = 'Q') {
+          console.log('Q')
+        }
+        if (key = 'Q') {
+          console.log('Q')
+        }
+        if (key = 'Q') {
+          console.log('Q')
+        }
+      }
+    }
+  }
+
+*/
+
+
+
+
+
+
   public movePiece(fromSquare: Square, toSquare: Square) {
     const movingPiece = this.getPiece(fromSquare);
     if (!!movingPiece && movingPiece.player === this.currentPlayer) {
       this.setPiece(toSquare, movingPiece);
       this.setPiece(fromSquare, undefined);
-      this.currentPlayer =
-        this.currentPlayer === Player.WHITE ? Player.BLACK : Player.WHITE;
-      // check if the move is an enPassant attack
-      if (
-        this.enPassant !== undefined &&
-        this.enPassant.equals(new Square(fromSquare.row, toSquare.col))
-      ) {
-        this.setPiece(this.enPassant, undefined);
+      //check for promotion
+      if (movingPiece instanceof Pawn && toSquare.row === 7) {
+        console.log('we have accessed white promotion if statement')
+        console.log(`piece promote = ${this.piecepromote}`)
+        if (this.piecepromote === 'Q') {
+          this.setPiece(toSquare, new Queen(Player.WHITE))
+        } else if (this.piecepromote === 'R') {
+          this.setPiece(toSquare, new Rook(Player.WHITE))
+        } else if (this.piecepromote === 'N') {
+          this.setPiece(toSquare, new Knight(Player.WHITE))
+        } else if (this.piecepromote === 'B') {
+          this.setPiece(toSquare, new Bishop(Player.WHITE))
+        }
       }
-      // check if the move can make the next step being an enPassant
-      if (
-        movingPiece instanceof Pawn &&
-        Math.abs(toSquare.row - fromSquare.row) === 2
-      ) {
-        this.enPassant = toSquare;
-      } else {
-        this.enPassant = undefined;
+      else if (movingPiece instanceof Pawn && toSquare.row === 0) {
+        console.log('we have accessed black promotion if statement')
+        console.log(`piece promote = ${this.piecepromote}`)
+        if (this.piecepromote === 'Q') {
+          this.setPiece(toSquare, new Queen(Player.BLACK))
+        } else if (this.piecepromote === 'R') {
+          this.setPiece(toSquare, new Rook(Player.BLACK))
+        } else if (this.piecepromote === 'N') {
+          this.setPiece(toSquare, new Knight(Player.BLACK))
+        } else if (this.piecepromote === 'B') {
+          this.setPiece(toSquare, new Bishop(Player.BLACK))
+        }
       }
-      //check if king is moving
-      if (movingPiece instanceof King) {
-        this.currentPlayer === Player.WHITE
-          ? (this.blackKingSquare = toSquare)
-          : (this.whiteKingSquare = toSquare);
-      }
+
     }
+
+    //change player
+    this.currentPlayer = this.currentPlayer === Player.WHITE ? Player.BLACK : Player.WHITE;
+    // check if the move is an enPassant attack
+    if (
+      this.enPassant !== undefined &&
+      this.enPassant.equals(new Square(fromSquare.row, toSquare.col))
+    ) {
+      this.setPiece(this.enPassant, undefined);
+    }
+    // check if the move can make the next step being an enPassant
+    if (
+      movingPiece instanceof Pawn &&
+      Math.abs(toSquare.row - fromSquare.row) === 2
+    ) {
+      this.enPassant = toSquare;
+    } else {
+      this.enPassant = undefined;
+    }
+    //check if king is moving
+    if (movingPiece instanceof King) {
+      this.currentPlayer === Player.WHITE
+        ? (this.blackKingSquare = toSquare)
+        : (this.whiteKingSquare = toSquare);
+    }
+    //reset promotion so queen is default
+    this.piecepromote = 'Q'
   }
 
   public isAttacked(targetSquare: Square, attacker: Player) {

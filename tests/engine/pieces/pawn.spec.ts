@@ -6,6 +6,7 @@ import Rook from "../../../src/engine/pieces/rook";
 import King from "../../../src/engine/pieces/king";
 import Queen from "../../../src/engine/pieces/queen";
 import Bishop from "../../../src/engine/pieces/bishop";
+import Knight from "../../../src/engine/pieces/knight";
 
 describe("Pawn", () => {
   let board: Board;
@@ -277,4 +278,89 @@ describe("Pawn", () => {
     // Assert
     (board.getPiece(Square.at(3, 4)) === undefined).should.equal(true);
   });
+
+  it("white pawn promotes to Queen", () => {
+    const whitePawn = new Pawn(Player.WHITE)
+    board.setPiece(Square.at(6, 5), whitePawn);
+    board.piecepromote = 'Q';
+    board.currentPlayer = Player.WHITE;
+    board.movePiece(Square.at(6,5), Square.at(7,5));
+    
+
+    (board.getPiece(Square.at(7, 5)) instanceof Queen).should.equal(true);
+  });
+
+  it("black pawn promotes to Queen", () => {
+    const blackPawn = new Pawn(Player.BLACK)
+    board.piecepromote = 'Q';
+    board.setPiece(Square.at(1, 5), blackPawn);
+    board.currentPlayer = Player.BLACK;
+    board.movePiece(Square.at(1,5), Square.at(0,5));
+    
+
+    (board.getPiece(Square.at(0, 5)) instanceof Queen).should.equal(true);
+  });
+
+  it("white pawn promotes to Rook", () => {
+    const whitePawn = new Pawn(Player.WHITE)
+    board.setPiece(Square.at(6, 5), whitePawn);
+    board.piecepromote = 'R';
+    board.currentPlayer = Player.WHITE;
+    board.movePiece(Square.at(6,5), Square.at(7,5));
+
+    (board.getPiece(Square.at(7, 5)) instanceof Rook).should.equal(true);
+  });
+
+  it("black pawn promotes to Rook", () => {
+    const blackPawn = new Pawn(Player.BLACK)
+    board.setPiece(Square.at(1, 5), blackPawn);
+    board.currentPlayer = Player.BLACK;
+    board.piecepromote = 'R';
+    board.movePiece(Square.at(1,5), Square.at(0,5));
+
+    (board.getPiece(Square.at(0, 5)) instanceof Rook).should.equal(true);
+  });
+
+  it("white pawn promotes to Knight", () => {
+    const whitePawn = new Pawn(Player.WHITE)
+    board.setPiece(Square.at(6, 5), whitePawn);
+    board.piecepromote = 'N';
+    board.currentPlayer = Player.WHITE;
+    board.movePiece(Square.at(6,5), Square.at(7,5));
+
+    (board.getPiece(Square.at(7, 5)) instanceof Knight).should.equal(true);
+  });
+
+  it("black pawn promotes to Knight", () => {
+    const blackPawn = new Pawn(Player.BLACK)
+    board.setPiece(Square.at(1, 5), blackPawn);
+    board.currentPlayer = Player.BLACK;
+    board.piecepromote = 'N';
+    board.movePiece(Square.at(1,5), Square.at(0,5));
+
+    (board.getPiece(Square.at(0, 5)) instanceof Knight).should.equal(true);
+  });
+
+  it("white pawn promotes to Bishop", () => {
+    const whitePawn = new Pawn(Player.WHITE)
+    board.setPiece(Square.at(6, 5), whitePawn);
+    board.piecepromote = 'B';
+    board.currentPlayer = Player.WHITE;
+    board.movePiece(Square.at(6,5), Square.at(7,5));
+
+    (board.getPiece(Square.at(7, 5)) instanceof Bishop).should.equal(true);
+  });
+
+  it("black pawn promotes to Bishop", () => {
+    const blackPawn = new Pawn(Player.BLACK)
+    board.setPiece(Square.at(1, 5), blackPawn);
+    board.currentPlayer = Player.BLACK;
+    board.piecepromote = 'B';
+    board.movePiece(Square.at(1,5), Square.at(0,5));
+
+    (board.getPiece(Square.at(0, 5)) instanceof Bishop).should.equal(true);
+  });
+
+
+
 });
