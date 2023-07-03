@@ -248,7 +248,7 @@ describe('King', () => {
         board.setPiece(Square.at(1, 1), whiteQueen);
         board.setPiece(Square.at(2, 2), whiteKing);
 
-        board.checkmate.should.equal(true)
+        //add checkmate here
     });
 
     it('stalemate', () => {

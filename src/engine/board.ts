@@ -9,20 +9,31 @@ import Bishop from "./pieces/bishop";
 import Knight from "./pieces/knight";
 import King from "./pieces/king";
 
-let keyPressed = new Map();
+
+ let promotion = 'Q'
+if (window !== undefined) {
 window.onkeydown = function (e) {
-  keyPressed.set(e.key, true);
-  console.log(`${e.key} pressed`);
   if (e.key === 'q') {
-    console.log(' qkey pressed')
+    promotion = 'Q'
+  } else if (e.key === 'r') {
+    promotion = 'R'
+  } else if (e.key === 'n') {
+    promotion = 'N'
+  } else if (e.key === 'b') {
+    promotion = 'B'
   }
+}
+}
+
+export function setPromotion(piece : string) {
+  promotion = piece
+}
 export default class Board {
   public currentPlayer: Player;
   private readonly board: (Piece | undefined)[][];
   public enPassant: Square | undefined;
   public whiteKingSquare: Square;
   public blackKingSquare: Square;
-  public piecepromote: String;
 
   public constructor(currentPlayer?: Player) {
     this.currentPlayer = currentPlayer ? currentPlayer : Player.WHITE;
@@ -30,7 +41,6 @@ export default class Board {
     this.enPassant = undefined;
     this.whiteKingSquare = new Square(0, 4);
     this.blackKingSquare = new Square(7, 4);
-    this.piecepromote = 'Q'
   }
 
   public setPiece(square: Square, piece: Piece | undefined) {
@@ -41,12 +51,6 @@ export default class Board {
     return this.board[square.row][square.col];
   }
 
-  public changepiece() {
-
-}
-  
-
-  
   public findPiece(pieceToFind: Piece) {
     for (let row = 0; row < this.board.length; row++) {
       for (let col = 0; col < this.board[row].length; col++) {
@@ -58,36 +62,32 @@ export default class Board {
     throw new Error("The supplied piece is not on the board");
   }
 
-
-
-
-
-
   public movePiece(fromSquare: Square, toSquare: Square) {
     const movingPiece = this.getPiece(fromSquare);
     if (!!movingPiece && movingPiece.player === this.currentPlayer) {
       this.setPiece(toSquare, movingPiece);
       this.setPiece(fromSquare, undefined);
       //check for promotion
+      console.log(promotion);
       if (movingPiece instanceof Pawn && toSquare.row === 7) {
-        if (this.piecepromote === 'Q') {
+        if (promotion === 'Q') {
           this.setPiece(toSquare, new Queen(Player.WHITE))
-        } else if (this.piecepromote === 'R') {
+        } else if (promotion === 'R') {
           this.setPiece(toSquare, new Rook(Player.WHITE))
-        } else if (this.piecepromote === 'N') {
+        } else if (promotion === 'N') {
           this.setPiece(toSquare, new Knight(Player.WHITE))
-        } else if (this.piecepromote === 'B') {
+        } else if (promotion === 'B') {
           this.setPiece(toSquare, new Bishop(Player.WHITE))
         }
       }
       else if (movingPiece instanceof Pawn && toSquare.row === 0) {
-        if (this.piecepromote === 'Q') {
+        if (promotion === 'Q') {
           this.setPiece(toSquare, new Queen(Player.BLACK))
-        } else if (this.piecepromote === 'R') {
+        } else if (promotion === 'R') {
           this.setPiece(toSquare, new Rook(Player.BLACK))
-        } else if (this.piecepromote === 'N') {
+        } else if (promotion === 'N') {
           this.setPiece(toSquare, new Knight(Player.BLACK))
-        } else if (this.piecepromote === 'B') {
+        } else if (promotion === 'B') {
           this.setPiece(toSquare, new Bishop(Player.BLACK))
         }
       }
@@ -118,8 +118,6 @@ export default class Board {
         ? (this.blackKingSquare = toSquare)
         : (this.whiteKingSquare = toSquare);
     }
-    //reset promotion so queen is default
-    this.piecepromote = 'Q'
   }
 
   public isAttacked(targetSquare: Square, attacker: Player) {
@@ -312,3 +310,6 @@ export default class Board {
     return board;
   }
 }
+
+
+

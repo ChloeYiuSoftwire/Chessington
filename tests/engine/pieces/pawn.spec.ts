@@ -1,5 +1,5 @@
 import Pawn from "../../../src/engine/pieces/pawn";
-import Board from "../../../src/engine/board";
+import Board,{setPromotion} from "../../../src/engine/board";
 import Player from "../../../src/engine/player";
 import Square from "../../../src/engine/square";
 import Rook from "../../../src/engine/pieces/rook";
@@ -282,7 +282,7 @@ describe("Pawn", () => {
   it("white pawn promotes to Queen", () => {
     const whitePawn = new Pawn(Player.WHITE)
     board.setPiece(Square.at(6, 5), whitePawn);
-    board.piecepromote = 'Q';
+    setPromotion('Q')
     board.currentPlayer = Player.WHITE;
     board.movePiece(Square.at(6,5), Square.at(7,5));
     
@@ -292,7 +292,7 @@ describe("Pawn", () => {
 
   it("black pawn promotes to Queen", () => {
     const blackPawn = new Pawn(Player.BLACK)
-    board.piecepromote = 'Q';
+    setPromotion('Q')
     board.setPiece(Square.at(1, 5), blackPawn);
     board.currentPlayer = Player.BLACK;
     board.movePiece(Square.at(1,5), Square.at(0,5));
@@ -304,7 +304,7 @@ describe("Pawn", () => {
   it("white pawn promotes to Rook", () => {
     const whitePawn = new Pawn(Player.WHITE)
     board.setPiece(Square.at(6, 5), whitePawn);
-    board.piecepromote = 'R';
+    setPromotion('R')
     board.currentPlayer = Player.WHITE;
     board.movePiece(Square.at(6,5), Square.at(7,5));
 
@@ -315,7 +315,7 @@ describe("Pawn", () => {
     const blackPawn = new Pawn(Player.BLACK)
     board.setPiece(Square.at(1, 5), blackPawn);
     board.currentPlayer = Player.BLACK;
-    board.piecepromote = 'R';
+    setPromotion('R')
     board.movePiece(Square.at(1,5), Square.at(0,5));
 
     (board.getPiece(Square.at(0, 5)) instanceof Rook).should.equal(true);
@@ -324,7 +324,7 @@ describe("Pawn", () => {
   it("white pawn promotes to Knight", () => {
     const whitePawn = new Pawn(Player.WHITE)
     board.setPiece(Square.at(6, 5), whitePawn);
-    board.piecepromote = 'N';
+    setPromotion('N')
     board.currentPlayer = Player.WHITE;
     board.movePiece(Square.at(6,5), Square.at(7,5));
 
@@ -335,7 +335,7 @@ describe("Pawn", () => {
     const blackPawn = new Pawn(Player.BLACK)
     board.setPiece(Square.at(1, 5), blackPawn);
     board.currentPlayer = Player.BLACK;
-    board.piecepromote = 'N';
+    setPromotion('N')
     board.movePiece(Square.at(1,5), Square.at(0,5));
 
     (board.getPiece(Square.at(0, 5)) instanceof Knight).should.equal(true);
@@ -344,7 +344,7 @@ describe("Pawn", () => {
   it("white pawn promotes to Bishop", () => {
     const whitePawn = new Pawn(Player.WHITE)
     board.setPiece(Square.at(6, 5), whitePawn);
-    board.piecepromote = 'B';
+    setPromotion('B')
     board.currentPlayer = Player.WHITE;
     board.movePiece(Square.at(6,5), Square.at(7,5));
 
@@ -355,7 +355,7 @@ describe("Pawn", () => {
     const blackPawn = new Pawn(Player.BLACK)
     board.setPiece(Square.at(1, 5), blackPawn);
     board.currentPlayer = Player.BLACK;
-    board.piecepromote = 'B';
+    setPromotion('B')
     board.movePiece(Square.at(1,5), Square.at(0,5));
 
     (board.getPiece(Square.at(0, 5)) instanceof Bishop).should.equal(true);
